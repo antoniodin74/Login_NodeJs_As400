@@ -1,0 +1,389 @@
+<%- contentFor('HeaderCss') %>
+
+<!-- DataTables -->
+<link href="public/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="public/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Responsive datatable examples -->
+<link href="public/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<!-- plugin css -->
+<link href="public/assets/libs/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="public/assets/libs/spectrum-colorpicker2/spectrum.min.css" rel="stylesheet" type="text/css">
+<link href="public/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<link href="public/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+<link href="public/assets/libs/@chenfengyuan/datepicker/datepicker.min.css" rel="stylesheet" >
+
+<%- contentFor('breadcrumb') %>
+<script>
+function getDettaglio(anreg, nrreg) {    
+        axios.get('/tables-datatable-bolle-det', {
+            params:{
+            anno: anreg,
+            numero: nrreg
+                }
+            }
+        )
+        .then(function (response) {
+            let myArray = response.data.Dati;
+            var table = $('#datatable1-buttons').DataTable();
+            table.clear();
+            for (let i = 0; i < myArray.length; i++) {
+                const myObject =myArray[i];
+                table.row.add( [
+                myObject.LACTR0,
+                myObject.LAMRN0,
+                myObject.LACAR0,
+                myObject.TABDTA,
+                myObject.LAIDV0,
+                myObject.LACNA0,
+                myObject.LACIM0
+                    ] ).draw();
+                }
+            }
+        )
+    }
+
+function setValDettaglio(anno,numero,deroga,tpbolla,nrbolla,dtbolla,tipologia,stato,totco){
+var panreg = document.getElementById("anreg");
+panreg.innerHTML = anno;
+var panreg = document.getElementById("nrreg");
+panreg.innerHTML = numero;
+var panreg = document.getElementById("derog");
+panreg.innerHTML = deroga;
+var panreg = document.getElementById("tpbol");
+panreg.innerHTML = tpbolla;
+var panreg = document.getElementById("nrbol");
+panreg.innerHTML = nrbolla;
+var panreg = document.getElementById("dtbol");
+panreg.innerHTML = dtbolla;
+var panreg = document.getElementById("tipolog");
+panreg.innerHTML = tipologia;
+var panreg = document.getElementById("stat");
+panreg.innerHTML = stato;
+var panreg = document.getElementById("ttcnt");
+panreg.innerHTML = totco;
+}
+</script>
+
+
+<%- contentFor('body') %>
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0">Gestione Bolle Doganali Export</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                    <li class="breadcrumb-item active">Datatables</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div><!-- end page title -->
+<div class="row">
+    <div class="col-xl-12">
+        <div class="custom-accordion">
+            <div class="card">
+                <a href="#checkout-billinginfo-collapse" class="text-dark" data-bs-toggle="collapse">
+                    <div class="p-4">
+                        
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="uil uil-receipt text-primary h2"></i>
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <h5 class="font-size-16 mb-1">Selezioni</h5>
+                                <p class="text-muted text-truncate mb-0">Effettuare le selezioni desiderate...</p>
+                            </div>
+                            <i class="mdi mdi-chevron-up accor-down-icon font-size-24"></i>
+                        </div>
+                        
+                    </div>
+                </a>
+
+                <div id="checkout-billinginfo-collapse" class="collapse">
+                    <div class="p-4 border-top">
+                        <form action="/tables-datatable-as" method="get" id="frmSelezioni">
+                            <div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="LAARE0">Anno registrazione</label>
+                                        <input type="text" class="form-control" id="LAARE0" name="LAARE0" placeholder="Enter anno reg.">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="LANRE0">Nr.registrazione</label>
+                                        <input type="text" class="form-control" id="LANRE0" name="LANRE0" placeholder="Enter nr.reg.">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="LADER0">Deroga</label>
+                                        <input type="text" class="form-control" id="LADER0" name="LADER0" placeholder="Enter deroga">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                            <label class="form-label" for="LATBO0">Tipo bolla</label>
+                                            <select class="form-control form-select" id="LATBO0" name="LATBO0" title="Tipo bolla">
+                                                <option value="0">Tp.bolla</option>
+                                                <option value="S">Singola</option>
+                                                <option value="G">Groupage</option>  
+                                                <option value="C">Cumulativa</option>
+                                            </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="LABNR0">Numero bolla</label>
+                                        <input type="text" class="form-control" id="LABNR0" name="LABNR0" placeholder="Enter numero bolla"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="dtbol">Data bolla range</label>
+                                        <div class="input-daterange input-group" id="datepicker6" data-date-format="dd/mm/yyyy" data-date-autoclose="true" data-provide="datepicker" data-date-container='#datepicker6'>
+                                            <input type="text" class="form-control" name="start" id="dtini" placeholder="Start Date" />
+                                            <input type="text" class="form-control" name="end" id="dtfin" placeholder="End Date" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="LABTI0">Tipologia bolla</label>
+                                        <input type="text" class="form-control" id="LABTI0" name="LABTI0" placeholder="Enter tipologia bolla"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-4">
+                                            <label class="form-label" for="LASTR0">Stato</label>
+                                            <select class="form-control form-select" id="LASTR0" name="LASTR0" title="Stato">
+                                                <option value="0">Stato</option>
+                                                <option value="0">Attiva</option>
+                                                <option value="1">Annullata</option>  
+                                            </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="mb-4">
+                                    <div class="col text-end">
+                                        <a href="#" class="btn btn-danger" id="btReset"> <i class="uil uil-times me-1"></i> Cancel </a>
+                                        <button type="submit" class="btn btn-success" id="btSave"> <i class="uil uil-file-alt me-1"></i> Save </button>
+                                    </div> <!-- end col -->
+                                </div>
+                            </div>
+                        </form>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end col -->
+</div><!-- end selezioni -->
+<div class="row"> 
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"></h4>    
+                <p class="card-title-desc"> <code></code>
+                </p>
+                <!-- MD25/01/2023 -->
+                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>Anno.Reg</th>
+                        <th>Nr.Reg</th>
+                        <th>Deroga</th>
+                        <th>Tipo Bolla</th>
+                        <th>Nr.Bolla</th>
+                        <th>Dt.Bolla</th>
+                        <th>Tipologia</th>
+                        <th>Stato</th>
+                        <th>Tot.Cntr</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% for (let dato of Dati) { %>
+                        <%var dtinv = dato.LABDT0.toString(); %>
+                        <%var aa = dtinv.substring(0, 4); %>
+                        <%var mm = dtinv.substring(5, 7); %>
+                        <%var gg = dtinv.substring(8, 10); %>
+                        <%var dtok = gg + '/' + mm + '/' + aa; %>
+                        <tr>
+                        <td><%= dato.LAARE0%></td>
+                        <td><%= dato.LANRE0%></td>
+                        <td><%= dato.LADER0%></td>
+                        <td><%= dato.LATBO0%></td>
+                        <td><%= dato.LABNR0%></td>
+                        <td><%= dtok %>      </td>
+                        <td><%= dato.LABTI0%></td>
+                        <td><%= dato.LASTR0%></td>
+                        <td><%= dato.TCNT%></td>
+                    </tr>
+                    <%}%> 
+                    </tbody>
+                </table>  
+            </div>
+        </div>
+    </div> <!-- end col -->
+
+</div> <!-- end tabella bolle -->
+<div class="row" id="row-scompare">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="invoice-title">
+                    <div class="mb-4">
+                        <p class="btn btn-primary w-md waves-effect waves-light">Dettaglio bolle</p>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="text-muted">
+                            <div>
+                                <h5 class="font-size-16 mb-1">Anno reg. :</h5>
+                                <p id="anreg"></p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-size-16 mb-1">Numero reg. :</h5>
+                                <p id="nrreg"></p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-size-16 mb-1">Deroga :</h5>
+                                <p id="derog"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-muted">
+                            <div>
+                                <h5 class="font-size-16 mb-1">Tipo bolla:</h5>
+                                <p id="tpbol"></p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-size-16 mb-1">Numero bolla:</h5>
+                                <p id="nrbol"></p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-size-16 mb-1">Data bolla:</h5>
+                                <p id="dtbol"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-muted">
+                            <div>
+                                <h5 class="font-size-16 mb-1">Tipologia:</h5>
+                                <p id="tipolog"></p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-size-16 mb-1">Stato:</h5>
+                                <p id="stat"></p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-size-16 mb-1">Totale container:</h5>
+                                <p id="ttcnt"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                
+                <div class="py-2">
+                    <div class="table-responsive">
+                        <table id="datatable1-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>Cntr</th>
+                                <th>Mrn</th>
+                                <th>Cd.Armatore</th>
+                                <th>Descrizione</th>
+                                <th>Id.viaggio</th>
+                                <th>Cd.nave</th>
+                                <th>Imbarcato</th>
+                            </tr>
+                            </thead>
+        
+                            <tbody>
+                                    <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end row tabella dettaglio bolle --> -->
+<%- contentFor('FooterJs') %>
+
+
+<!-- Required datatable js -->
+<script src="public/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="public/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons examples -->
+<script src="public/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="public/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="public/assets/libs/jszip/jszip.min.js"></script>
+<script src="public/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="public/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+<script src="public/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="public/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="public/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+<!-- Responsive examples -->
+<script src="public/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="public/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+<!-- plugins -->
+<script src="public/assets/libs/select2/js/select2.min.js"></script>
+<script src="public/assets/libs/spectrum-colorpicker2/spectrum.min.js"></script>
+<script src="public/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="public/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+<script src="public/assets/libs/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+<script src="public/assets/libs/@chenfengyuan/datepicker/datepicker.min.js"></script>
+
+<!-- Datatable init js -->
+<script src="public/assets/js/pages/datatables.init.js"></script>
+<script src="public/assets/js/pages/form-advanced.init.js"></script>
+<script src="public/assets/js/app.js"></script>
+<script src="/axios/axios.min.js"></script>
+<script>
+    $('#datatable-buttons tbody').on('click', 'tr', function() {
+        var anno = $(this).find('td:eq(0)').text();
+        var numero = $(this).find('td:eq(1)').text();
+        var deroga = $(this).find('td:eq(2)').text();
+        var tpbolla = $(this).find('td:eq(3)').text();
+        var nrbolla = $(this).find('td:eq(4)').text();
+        var dtbolla = $(this).find('td:eq(5)').text();
+        var tipologia = $(this).find('td:eq(6)').text();
+        var stato = $(this).find('td:eq(7)').text();
+        var ttcnt = $(this).find('td:eq(8)').text();
+        //console.log(anno);
+        //console.log(numero);
+        getDettaglio(anno,numero);
+        setValDettaglio(anno,numero,deroga,tpbolla,nrbolla,dtbolla,tipologia,stato,ttcnt)
+        document.getElementById("row-scompare").style.display = "flex";
+});
+</script>
+<%- contentFor('BottomJs') %>

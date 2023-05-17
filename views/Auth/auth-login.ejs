@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Log In | AS400</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="public/assets/images/favicon.ico">
+
+    <%- include ('../Partials/HeaderStyle')  %>
+
+</head>
+
+<!-- 25/01/20223-->
+<script>
+    async function loginUser(loginForm) {
+        var user = {};
+        user['user'] = document.getElementById('username').value;
+        user['pwd'] = document.getElementById('userpassword').value;
+        await fetch('http://192.1.1.1/api/authservice', {
+            method:'POST',
+            headers: ({'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8; application/json'}),
+            body: JSON.stringify(user)
+        }).then( function(res) {
+            //console.log(res);
+            return res.json();
+        }).then(function(data) {
+            //console.log(data);
+            if (data.success) {
+                MemSession();
+                }
+            //document.getElementById('loginForm').reset();
+            document.getElementById('message').innerHTML = data['message'];
+        }).catch(error => console.log(error));
+
+    }
+    async function MemSession() {
+        try {
+        const res = await axios.post('/loginAs',
+            {
+                username : loginForm.username.value,
+                userpassword : loginForm.userpassword.value
+            }
+        );
+        location.href = '/';
+        } catch (e) {
+            document.getElementById('message').innerHTML = e;
+        }
+    }
+</script>
+<!-- 25/01/20223 FINE-->
+<body class="authentication-bg">
+    <div class="account-pages my-5 pt-sm-5">
+        <div class="container">
+
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <div class="text-center mt-2">
+                                <h5 class="text-primary">LOG IN AS400 !</h5>
+                                <p class="text-muted">Accedi per continuare su As400</p>
+                            </div>
+                            <div class="p-2 mt-4">
+                                <% if(error.length> 0) { %>
+                                    <div class="alert alert-danger text-center mb-4 flash" role="alert">
+                                        <%= error %>
+                                    </div>
+                                <% } %>
+                                <% if(message.length> 0) { %>
+                                    <div class="alert alert-success text-center mb-4 flash" role="alert">
+                                        <%= message %>
+                                    </div>
+                                <% } %>
+                                <form id="loginForm" onsubmit="loginUser(this); return false">
+
+                                    <div class="mb-3">
+                                        <label class="form-label" for="username">Utente</label>
+                                        <input type="text" class="form-control" id="username" name="email"
+                                            placeholder="Enter utente">
+                                    </div>
+
+                                    <div class="mb-3"> 
+                                        <label class="form-label" for="userpassword">Password</label>
+                                        <input type="password" class="form-control" id="userpassword" name="password"
+                                            placeholder="Enter password">
+                                    </div>
+
+                                    <div class="form-check">
+                                       
+                                    </div>
+
+                                    <div class="mt-3 text-end">
+                                        <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Log
+                                            In</button>
+                                    </div>
+                                </form>
+                                <p id="message" name="message"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 text-center">
+                        <p>©
+                            <script>document.write(new Date().getFullYear())</script> Co.Na.Te.Co. <i
+                                class="mdi mdi-heart text-danger"></i> by AD
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+        <!-- end container -->
+    </div>
+
+    <%- include ('../Partials/VendorScript')  %>
+
+    <script src="public/assets/js/app.js"></script>
+    <script src="/axios/axios.min.js"></script>
+</body>
+</html>
